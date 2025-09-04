@@ -61,36 +61,62 @@
 import java.util.Arrays;
 
 class Solution {
+    // public static int coinChange(int[] coins, int amount) {
+
+    // if(amount == 0){
+    // return amount;
+    // }
+
+    // Arrays.sort(coins);
+    // int iteration = 0;
+    // for (int i = coins.length - 1; i >= 0; i--) {
+
+    // if(amount >= coins[i] ){
+    // int mul = amount / coins[i];
+    // amount -= mul * coins[i];
+    // iteration+= mul;
+    // if(amount == 0){
+    // return iteration;
+    // }
+    // }
+
+    // }
+
+    // return -1;
+    // }
+
     public static int coinChange(int[] coins, int amount) {
+        int max = amount + 1;
+        int[] dp = new int[amount + 1];
 
-        if(amount == 0){
-            return amount;
+        // initialize dp with max value
+        for (int i = 0; i <= amount; i++) {
+            dp[i] = max;
         }
+        dp[0] = 0; // base case
 
-        Arrays.sort(coins);
-        int iteration = 0;
-        for (int i = coins.length - 1; i >= 0; i--) {
-
-            if(amount >= coins[i] ){
-                int mul = amount / coins[i];
-                amount -= mul * coins[i];
-                iteration+= mul;
-                if(amount == 0){
-                    return iteration;
+        for (int i = 1; i <= amount; i++) {
+            for (int coin : coins) {
+                if (i - coin >= 0) {
+                    System.out.println("IS COIN WORTH COIN => " + coin + " :: i => " + i);
+                    System.out.println("COMPARING ::: dp[i] => " + dp[i] + " and  dp[i - coin] + 1 => " + (dp[i - coin] + 1) + " MINIMUN => " + Math.min(dp[i], dp[i - coin] + 1));
+                    dp[i] = Math.min(dp[i], dp[i - coin] + 1);
+                    
                 }
             }
-
+            System.out.println(Arrays.toString(dp));
+            System.out.println();
         }
 
-        return -1;
+        return dp[amount] > amount ? -1 : dp[amount];
     }
 
     public static void main(String[] args) {
-        int coins[] = { 186,419,83,408 };
+        int coins[] = { 2, 5 };
 
         // System.out.println(3%5);
 
-        int result = coinChange(coins, 6249);
+        int result = coinChange(coins, 11);
 
         System.out.println("THE RESULT ISS ::: " + result);
     }
